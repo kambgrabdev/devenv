@@ -10,9 +10,9 @@ cat /vagrant/vagrant.pub > /home/vagrant/.ssh/authorized_keys
 
 sudo chmod 600 /home/vagrant/.ssh/authorized_keys
 
-cp /vagrant/vagrant /home/vagrant/.ssh/id_rsa
+cp /vagrant/vagrant /home/vagrant/.ssh/vagrant
 
-sudo chown vagrant:vagrant /home/vagrant/.ssh/id_rsa
+sudo chown vagrant:vagrant /home/vagrant/.ssh/vagrant
 sudo echo "" > /etc/ssh/sshd_config
 sudo echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 

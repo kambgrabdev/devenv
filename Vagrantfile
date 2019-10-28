@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     (1..3).each do |i|
         config.vm.define "node-#{i}" do |node|
             node.vm.hostname = "node-#{i}"
-            node.vm.network "private_network", ip: "10.0.0.#{i}"
+            node.vm.network "public_network", ip: "192.168.1.#{i}0"
             node.vm.provision "shell", path: "init.sh"
         
         end
