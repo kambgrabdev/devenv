@@ -17,9 +17,9 @@ firewall-cmd --reload
 
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 cat /proc/sys/net/bridge/bridge-nf-call-iptables | grep '1'  && echo 'ok: 1' || echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
-cat /etc/hosts | grep '192.168.1.10' && echo 'ok' || echo '192.168.1.10 node-1' >> /etc/hosts
-cat /etc/hosts | grep '192.168.1.20' && echo 'ok' || echo '192.168.1.20 node-2' >> /etc/hosts
-cat /etc/hosts | grep '192.168.1.30' && echo 'ok' || echo '192.168.1.30 node-3' >> /etc/hosts
+cat /etc/hosts | grep '172.17.35.101' && echo 'ok' || echo '172.17.35.101 node-1' >> /etc/hosts
+cat /etc/hosts | grep '172.17.35.102' && echo 'ok' || echo '172.17.35.102 node-2' >> /etc/hosts
+cat /etc/hosts | grep '172.17.35.103' && echo 'ok' || echo '172.17.35.103 node-3' >> /etc/hosts
 
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
