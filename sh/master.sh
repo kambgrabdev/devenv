@@ -1,6 +1,6 @@
 #!/bin/bash
 swapoff -a
-hostnamectl set-hostname 'node-1'
+hostnamectl set-hostname 'master'
 #exec bash
 setenforce 0
 sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
@@ -21,9 +21,9 @@ modprobe br_netfilter
 
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 cat /proc/sys/net/bridge/bridge-nf-call-iptables | grep '1'  && echo 'ok: 1' || echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
-cat /etc/hosts | grep '172.17.35.101' && echo 'ok' || echo '172.17.35.101 node-1' >> /etc/hosts
-cat /etc/hosts | grep '172.17.35.102' && echo 'ok' || echo '172.17.35.102 node-2' >> /etc/hosts
-cat /etc/hosts | grep '172.17.35.103' && echo 'ok' || echo '172.17.35.103 node-3' >> /etc/hosts
+cat /etc/hosts | grep '10.0.0.10' && echo 'ok' || echo '10.0.0.10 master' >> /etc/hosts
+cat /etc/hosts | grep '10.0.0.101' && echo 'ok' || echo '10.0.0.101 worker-1' >> /etc/hosts
+cat /etc/hosts | grep '10.0.0.102' && echo 'ok' || echo '10.0.0.102 worker-2' >> /etc/hosts
 
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -42,7 +42,7 @@ systemctl restart kubelet && systemctl enable kubelet
 
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 
-kubeadm init --apiserver-advertise-address 172.17.35.101 --pod-network-cidr=10.244.0.0/16
+kubeadm init --apiserver-advertise-address 10.0.0.10 --pod-network-cidr=10.244.0.0/16
 
 mkdir -p $HOME/.kube
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -56,3 +56,6 @@ kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube
 #kubectl create -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
+
+#kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+#http://127.0.0.1:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=default

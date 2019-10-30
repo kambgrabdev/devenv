@@ -17,9 +17,9 @@ firewall-cmd --reload
 
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 cat /proc/sys/net/bridge/bridge-nf-call-iptables | grep '1'  && echo 'ok: 1' || echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
-cat /etc/hosts | grep '172.17.35.101' && echo 'ok' || echo '172.17.35.101 node-1' >> /etc/hosts
-cat /etc/hosts | grep '172.17.35.102' && echo 'ok' || echo '172.17.35.102 node-2' >> /etc/hosts
-cat /etc/hosts | grep '172.17.35.103' && echo 'ok' || echo '172.17.35.103 node-3' >> /etc/hosts
+cat /etc/hosts | grep '10.0.0.10' && echo 'ok' || echo '10.0.0.10 master' >> /etc/hosts
+cat /etc/hosts | grep '10.0.0.101' && echo 'ok' || echo '10.0.0.101 worker-1' >> /etc/hosts
+cat /etc/hosts | grep '10.0.0.102' && echo 'ok' || echo '10.0.0.102 worker-2' >> /etc/hosts
 
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -35,14 +35,7 @@ EOF
 yum install kubeadm docker -y
 systemctl restart docker && systemctl enable docker
 
-#kubeadm init
-
-
-#mkdir -p $HOME/.kube
-#cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-#chown $(id -u):$(id -g) $HOME/.kube/config
-
-#export kubever=$(kubectl version | base64 | tr -d '\n')
-#kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
 
 #kubeadm join --token xxx
+
+#--apiserver-advertise-address 10.0.0.103

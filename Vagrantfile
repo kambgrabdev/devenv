@@ -11,11 +11,18 @@ Vagrant.configure("2") do |config|
         vb.gui = true
     end
 
-    (1..3).each do |i|
-        config.vm.define "node-#{i}" do |node|
-            node.vm.hostname = "node-#{i}"
-            node.vm.network "public_network", ip: "172.17.35.10#{i}"
-            node.vm.provision "shell", path: "init.sh"
+    config.vm.define "master" do |node|
+        node.vm.hostname = "master"
+        node.vm.network "private_network", ip: "10.0.0.10"
+        node.vm.provision "shell", path: "sh/init.sh"
+        node.vm.network "forwarded_port", guest: 8001, host: 8001
+    end
+
+    (1..2).each do |i|
+        config.vm.define "worker-#{i}" do |node|
+            node.vm.hostname = "worker-#{i}"
+            node.vm.network "private_network", ip: "10.0.0.10#{i}"
+            node.vm.provision "shell", path: "sh/init.sh"
         
         end
     end

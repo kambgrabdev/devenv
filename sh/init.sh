@@ -19,3 +19,5 @@ sudo echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 sudo echo "Host *" >> /home/vagrant/.ssh/config
 sudo echo " StrictHostKeyChecking no" >> /home/vagrant/.ssh/config
 sudo echo " UserKnownHostsFile=/dev/null" >> /home/vagrant/.ssh/config
+
+sudo yum -y install net-tools
